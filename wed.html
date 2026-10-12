@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн-магазин TechMarket — Лабораторна робота №2</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Верхній колонтитул (Шапка) */
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        /* Блок навігації <nav> */
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #f1f5f9;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            background: #0284c7;
+            color: white;
+        }
+
+        /* Основний контейнер (Flexbox) */
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Ліва бічна колонка (Сайдбар) */
+        .sidebar {
+            flex-grow: 1;
+            flex-basis: 240px;
+            background-color: #e2e8f0;
+            padding: 20px;
+            border-right: 2px solid #cbd5e1;
+        }
+
+        .sidebar h3 {
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .sidebar ul {
+            list-style-type: square;
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        /* Основний вміст */
+        .content {
+            flex-grow: 3;
+            flex-basis: 600px;
+            background-color: #ffffff;
+            padding: 25px;
+        }
+
+        .content h2 {
+            color: #0f172a;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #0284c7;
+            padding-bottom: 6px;
+        }
+
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        /* Сітка товарів */
+        .product-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .product-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            width: 48%;
+            background-color: #f8fafc;
+        }
+
+        .product-card h4 {
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #16a34a;
+            margin-top: 5px;
+        }
+
+        /* Перемикання сторінок */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        /* Нижній колонтитул (Футер) */
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхній колонтитул (шапка) -->
+    <header>
+        <h1>Інтернет-магазин гаджетів «TechMarket»</h1>
+        <nav>
+            <ul>
+                <li><a class="nav-link active" onclick="showPage('index')">Головна</a></li>
+                <li><a class="nav-link" onclick="showPage('catalog')">Каталог</a></li>
+                <li><a class="nav-link" onclick="showPage('sales')">Акції</a></li>
+                <li><a class="nav-link" onclick="showPage('about')">Про нас</a></li>
+                <li><a class="nav-link" onclick="showPage('contacts')">Контакти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Основний контейнер з поділом на колонки -->
+    <div class="main-container">
+        
+        <!-- Ліва бічна колонка (Сайдбар) -->
+        <aside class="sidebar">
+            <div id="sidebar-index" class="sidebar-section">
+                <h3>Швидкі посилання</h3>
+                <ul>
+                    <li>Новинки місяця</li>
+                    <li>Хіти продажів</li>
+                    <li>Відгуки покупців</li>
+                </ul>
+            </div>
+            <div id="sidebar-catalog" class="sidebar-section" style="display:none;">
+                <h3>Фільтри каталогу</h3>
+                <ul>
+                    <li>Cмартфони</li>
+                    <li>Ноутбуки</li>
+                    <li>Навушники</li>
+                    <li>Аксесуари</li>
+                </ul>
+            </div>
+            <div id="sidebar-sales" class="sidebar-section" style="display:none;">
+                <h3>Знижки тижня</h3>
+                <ul>
+                    <li>До -30% на смарт-годинники</li>
+                    <li>Распродаж аксесуарів</li>
+                </ul>
+            </div>
+            <div id="sidebar-about" class="sidebar-section" style="display:none;">
+                <h3>Переваги</h3>
+                <ul>
+                    <li>Офіційна гарантія</li>
+                    <li>Швидка доставка</li>
+                    <li>Зручна оплата</li>
+                </ul>
+            </div>
+            <div id="sidebar-contacts" class="sidebar-section" style="display:none;">
+                <h3>Графік роботи</h3>
+                <p>Пн-Пт: 09:00 - 19:00</p>
+                <p>Сб-Нд: 10:00 - 17:00</p>
+            </div>
+        </aside>
+
+        <!-- Основна частина сторінки -->
+        <main class="content">
+            
+            <!-- Сторінка 1: Головна (index.html) -->
+            <section id="page-index" class="page-section active-page">
+                <h2>Ласкаво просимо до TechMarket!</h2>
+                <p>Ми пропонуємо широкий вибір сучасних гаджетів, електроніки та аксесуарів за найкращими цінами.</p>
+                
+                <h3 style="margin-top: 20px;">Популярні категорії:</h3>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <h4>Смартфони</h4>
+                        <p>Останні моделі флагманів та бюджетних пристроїв.</p>
+                    </div>
+                    <div class="product-card">
+                        <h4>Ноутбуки</h4>
+                        <p>Для роботи, навчання та сучасних ігор.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Сторінка 2: Каталог (catalog.html) -->
+            <section id="page-catalog" class="page-section">
+                <h2>Каталог товарів</h2>
+                <p>Оберіть техніку під свої потреби:</p>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <h4>Смартфон TechPhone Pro</h4>
+                        <p>Дисплей 6.7", 128 ГБ пам'яті, камера 50 МП.</p>
+                        <p class="price">24 999 грн</p>
+                    </div>
+                    <div class="product-card">
+                        <h4>Ноутбук WorkBook 15</h4>
+                        <p>Intel Core i5, 16 ГБ RAM, 512 ГБ SSD.</p>
+                        <p class="price">32 500 грн</p>
+                    </div>
+                    <div class="product-card">
+                        <h4>Бездротові навушники AirSound</h4>
+                        <p>Активне шумозаглушення, до 24 годин роботи.</p>
+                        <p class="price">3 200 грн</p>
+                    </div>
+                    <div class="product-card">
+                        <h4>Смарт-годинник FitWatch</h4>
+                        <p>Моніторинг пульсу, крокомір, водозахист.</p>
+                        <p class="price">4 500 грн</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Сторінка 3: Акції (sales.html) -->
+            <section id="page-sales" class="page-section">
+                <h2>Спеціальні пропозиції та акції</h2>
+                <p>Купуйте популярні гаджети зі знижками до кінця місяця!</p>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <h4>Акційний комплект: Навушники + Чохол</h4>
+                        <p>Купуйте комплект та заощаджуйте 20% від вартості.</p>
+                        <p class="price"><s style="color:red;">3 800 грн</s> 2 999 грн</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Сторінка 4: Про нас (about.html) -->
+            <section id="page-about" class="page-section">
+                <h2>Про наш магазин</h2>
+                <p><strong>TechMarket</strong> працює на ринку України вже понад 5 років. Наша мета — забезпечити кожного клієнта якісною технікою та першокласним сервісом.</p>
+                <p>Ми співпрацюємо безпосередньо з офіційними дистриб'юторами брендів, тому гарантуємо якість усієї продукції.</p>
+            </section>
+
+            <!-- Сторінка 5: Контакти (contacts.html) -->
+            <section id="page-contacts" class="page-section">
+                <h2>Контактна інформація</h2>
+                <p><strong>Адреса:</strong> м. Вінниця, вул. Соборна, 15</p>
+                <p><strong>Телефон:</strong> +380 (432) 00-00-00</p>
+                <p><strong>Email:</strong> support@techmarket.ua</p>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Нижній колонтитул (футер) -->
+    <footer>
+        <p>&copy; 2026 Онлайн-магазин TechMarket. Лабораторна робота №2.</p>
+    </footer>
+
+    <!-- Скрипт перемикання сторінок -->
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            const sidebars = document.querySelectorAll('.sidebar-section');
+            const links = document.querySelectorAll('.nav-link');
+
+            pages.forEach(p => p.classList.remove('active-page'));
+            sidebars.forEach(s => s.style.display = 'none');
+            links.forEach(l => l.classList.remove('active'));
+
+            document.getElementById('page-' + pageId).classList.add('active-page');
+            document.getElementById('sidebar-' + pageId).style.display = 'block';
+
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
